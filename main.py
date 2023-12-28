@@ -1,5 +1,4 @@
 # Ulitmate Texas Holdem
-import unittest
 import random
 import time
 import math
@@ -471,6 +470,7 @@ def main() -> None:
     playerRoll = 0
     playerWins = 0
     dealerWins = 0
+    ties = 0
 
     print("Ultimate Texas Holdem\n")
     playerRoll = getChips()
@@ -526,8 +526,6 @@ def main() -> None:
         dealerHandRank, dealerKeyRank1, dealerKeyRank2, dealerHiSum = getHandRank(
             dealerHand, board)
 
-        print(f"Player: {playerHandRank}")
-        print(f"Dealer: {dealerHandRank}\n")
         print(f"Dealer Hand: {dealerHand[0]} {dealerHand[1]}")
 
         if playerHandRank > dealerHandRank:
@@ -555,6 +553,7 @@ def main() -> None:
 
         if winner == "push":
             print("Push.\n")
+            ties += 1
             continue
 
         if winner == "dealer":
@@ -603,7 +602,7 @@ def main() -> None:
         if choice == "y":
             time.sleep(1)
             print(f"Player Roll: {playerRoll}\n")
-            print(f"Player Stats: W{playerWins} - L{dealerWins}.\n")
+            print(f"Player Stats: W{playerWins} - L{dealerWins} - T{ties}.\n")
 
             if playerRoll <= 0:
                 reloadAmount = getChips()
