@@ -129,7 +129,7 @@ def generateDeck() -> list:
 
 
 # Deal hand
-def dealCards(deck) -> list:
+def dealCards(deck) -> tuple:
     playerCard1 = deck.pop()
     dealerCard1 = deck.pop()
     playerCard2 = deck.pop()
@@ -526,6 +526,7 @@ def main() -> None:
         dealerHandRank, dealerKeyRank1, dealerKeyRank2, dealerHiSum = getHandRank(
             dealerHand, board)
 
+        print(f"Player Hand: {playerHand[0]} {playerHand[1]}")
         print(f"Dealer Hand: {dealerHand[0]} {dealerHand[1]}")
 
         if playerHandRank > dealerHandRank:
@@ -554,7 +555,6 @@ def main() -> None:
         if winner == "push":
             print("Push.\n")
             ties += 1
-            continue
 
         if winner == "dealer":
             print("Dealer Wins...\n")
@@ -607,6 +607,7 @@ def main() -> None:
             if playerRoll <= 0:
                 reloadAmount = getChips()
                 playerRoll += reloadAmount
+
             continue
         else:
             time.sleep(1)
