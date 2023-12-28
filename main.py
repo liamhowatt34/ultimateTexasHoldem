@@ -610,7 +610,7 @@ def main() -> None:
             continue
         else:
             time.sleep(1)
-            print(f"Player Stats: W{playerWins} - L{dealerWins}.\n")
+            print(f"Player Stats: W{playerWins} - L{dealerWins} - T{ties}.\n")
             playing = False
             break
 
