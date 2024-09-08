@@ -2,6 +2,7 @@ import random
 import time
 import math
 from typing import List, Tuple
+from player import Player
 
 # Constants
 STRAIGHT_FLUSH = 9
@@ -141,7 +142,7 @@ def dealFlop(deck) -> List[str]:
     return [card1, card2, card3]
 
 
-def dealTurnAndRiver(deck) -> list[str]:
+def dealTurnAndRiver(deck) -> List[str]:
     card1 = deck.pop()
     card2 = deck.pop()
 
@@ -461,13 +462,10 @@ def getHandRank(hand, board) -> Tuple[int, int, int, int]:
 
 # Main game function
 def main() -> None:
-    playerRoll = 0
-    playerWins = 0
-    dealerWins = 0
-    ties = 0
 
     print("Ultimate Texas Holdem\n")
-    playerRoll = getChips()
+    player_roll = getChips()
+    player = Player(player_roll, 0, 0, 0)
 
     playing = True
     while playing:
@@ -548,13 +546,14 @@ def main() -> None:
 
         if winner == "push":
             print("\nPush.")
-            ties += 1
+            player.update_ties()
 
         if winner == "dealer":
             print("\nDealer Wins...")
             print(f"Player: -${betTotal}")
-            playerRoll -= betTotal
-            dealerWins += 1
+            player_roll -= betTotal
+            player.roll = player_roll
+            player.update_losses()
 
         if winner == "player":
             print("\nPlayer Wins!!!")
@@ -587,25 +586,26 @@ def main() -> None:
                 winnings += riverBet
 
             print(f"Player +${winnings}")
-            playerRoll += winnings
-            playerWins += 1
+            player_roll += winnings
+            player.roll = player_roll
+            player.update_wins()
 
         time.sleep(1)
         choice = playAgain()
 
         if choice == "y":
             time.sleep(1)
-            print(f"\nPlayer Roll: ${playerRoll}\n")
-            print(f"Player Stats: W{playerWins} - L{dealerWins} - T{ties}.\n")
+            print(f"\nPlayer Roll: ${player_roll}\n")
+            print(f"Player Stats: W{player.wins} - L{player.losses} - T{player.ties}.\n")
 
-            if playerRoll <= 0:
+            if player_roll <= 0:
                 reloadAmount = getChips()
-                playerRoll += reloadAmount
-
+                player_roll += reloadAmount
+                player.roll = player_roll
             continue
         else:
             time.sleep(1)
-            print(f"\nPlayer Stats: W{playerWins} - L{dealerWins} - T{ties}.\n")
+            print(f"\nPlayer Stats: W{player.wins} - L{player.losses} - T{player.ties}.\n")
             playing = False
             break
 
