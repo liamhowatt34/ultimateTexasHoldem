@@ -496,7 +496,7 @@ def main() -> None:
             betTotal += preflopBet
 
         board = dealFlop(deck)
-        print(f"\tFlop: {board[0]}  {board[1]}  {board[2]}")
+        print(f"\t\nFlop: {board[0]}  {board[1]}  {board[2]}\n")
 
         if preflopBet == 0:
             flopChoice = betOrCheck()
@@ -506,7 +506,7 @@ def main() -> None:
 
         river = dealTurnAndRiver(deck)
         board.extend(river)
-        print(f"\tBoard: {board[0]}  {board[1]}  {board[2]}  {board[3]}  {board[4]}")
+        print(f"\t\nBoard: {board[0]}  {board[1]}  {board[2]}  {board[3]}  {board[4]}\n")
 
         if preflopBet == 0 and flopBet == 0:
             riverChoice = betOrCheck()
