@@ -1,7 +1,7 @@
 import random
 import time
 import math
-from typing import List, Tuple
+from typing import Tuple
 from player import Player
 
 # Constants
@@ -22,7 +22,7 @@ BET_CLR = "\033[33m"
 RESET_CLR = "\033[0m"
 
 # User input functions
-def getChips() -> int:
+def get_chips() -> int:
     chips = 0
 
     while True:
@@ -33,7 +33,7 @@ def getChips() -> int:
         return chips
 
 
-def placeBet() -> int:
+def place_bet() -> int:
     bet = 0
 
     while True:
@@ -44,7 +44,7 @@ def placeBet() -> int:
         return bet
 
 
-def placePreflopBet(ante) -> int:
+def place_preflop_bet(ante) -> int:
     bet = 0
 
     while True:
@@ -59,7 +59,7 @@ def placePreflopBet(ante) -> int:
         return bet
 
 
-def placeFlopBet(ante) -> int:
+def place_flop_bet(ante) -> int:
     bet = 0
 
     while True:
@@ -74,7 +74,7 @@ def placeFlopBet(ante) -> int:
         return bet
 
 
-def placeRiverBet(ante) -> int:
+def place_river_bet(ante) -> int:
     bet = 0
 
     while True:
@@ -90,32 +90,32 @@ def placeRiverBet(ante) -> int:
 
 
 # Flop and river decisions
-def betOrCheck() -> str:
-    validOptions = ["b", "c"]
-    userInput = ""
+def bet_or_check() -> str:
+    valid_options = ["b", "c"]
+    user_input = ""
 
     while True:
-        userInput = input(
+        user_input = input(
             f"Do you want to check or bet? Enter {CHECK_CLR}'c'{RESET_CLR} for {CHECK_CLR}check{RESET_CLR} or {BET_CLR}'b'{RESET_CLR} for {BET_CLR}bet{RESET_CLR}: ").lower()
 
-        if userInput in validOptions:
-            return userInput
+        if user_input in valid_options:
+            return user_input
 
 
-def playAgain() -> str:
-    validOptions = ["y", "n"]
-    userInput = ""
+def play_again() -> str:
+    valid_options = ["y", "n"]
+    user_input = ""
 
     while True:
-        userInput = input(
+        user_input = input(
             "Do you want to play again? y for yes, n for no: ").lower()
 
-        if userInput in validOptions:
-            return userInput
+        if user_input in valid_options:
+            return user_input
 
 
 # Casino and cards functions
-def generateDeck() -> List[str]:
+def generate_deck() -> list[str]:
     ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K']
     suits = ['h', 's', 'd', 'c']
     cards = [rank + suit for suit in suits for rank in ranks]
@@ -125,16 +125,16 @@ def generateDeck() -> List[str]:
     return cards
 
 
-def dealCards(deck) -> Tuple[str, str]:
-    playerCard1 = deck.pop()
-    dealerCard1 = deck.pop()
-    playerCard2 = deck.pop()
-    dealerCard2 = deck.pop()
+def deal_cards(deck) -> Tuple[str, str]:
+    player_card1 = deck.pop()
+    dealer_card1 = deck.pop()
+    player_card2 = deck.pop()
+    dealer_card2 = deck.pop()
 
-    return [playerCard1, playerCard2], [dealerCard1, dealerCard2]
+    return [player_card1, player_card2], [dealer_card1, dealer_card2]
 
 
-def dealFlop(deck) -> List[str]:
+def deal_flop(deck) -> list[str]:
     card1 = deck.pop()
     card2 = deck.pop()
     card3 = deck.pop()
@@ -142,7 +142,7 @@ def dealFlop(deck) -> List[str]:
     return [card1, card2, card3]
 
 
-def dealTurnAndRiver(deck) -> List[str]:
+def deal_turn_and_river(deck) -> list[str]:
     card1 = deck.pop()
     card2 = deck.pop()
 
@@ -150,7 +150,7 @@ def dealTurnAndRiver(deck) -> List[str]:
 
 
 # Evaluate hand functions
-def straightFaceToInt(cards) -> List[int]:
+def straight_face_to_int(cards) -> list[int]:
     ranks = [card[:-1] for card in cards]
 
     ranks = ['11' if rank == 'J' else rank for rank in ranks]
@@ -162,12 +162,12 @@ def straightFaceToInt(cards) -> List[int]:
     else:
         ranks = ['14' if rank == 'A' else rank for rank in ranks]
 
-    intRanks = [int(rank) for rank in ranks]
+    int_ranks = [int(rank) for rank in ranks]
 
-    return intRanks
+    return int_ranks
 
 
-def faceToInt(cards) -> List[int]:
+def face_to_int(cards) -> list[int]:
     ranks = [card[:-1] for card in cards]
 
     ranks = ['11' if rank == 'J' else rank for rank in ranks]
@@ -175,12 +175,12 @@ def faceToInt(cards) -> List[int]:
     ranks = ['13' if rank == 'K' else rank for rank in ranks]
     ranks = ['14' if rank == 'A' else rank for rank in ranks]
 
-    intRanks = [int(rank) for rank in ranks]
+    int_ranks = [int(rank) for rank in ranks]
 
-    return intRanks
+    return int_ranks
 
 
-def isStraightFlush(hand, board) -> int:
+def is_straight_flush(hand, board) -> int:
     cards = hand + board
     suits = {'h': [], 's': [], 'd': [], 'c': []}
 
@@ -198,7 +198,7 @@ def isStraightFlush(hand, board) -> int:
 
 
 def find_straight_flush_value(cards) -> int:
-    int_cards = faceToInt(cards)
+    int_cards = face_to_int(cards)
     int_cards.sort()
 
     longest_straight_flush = []
@@ -222,11 +222,11 @@ def find_straight_flush_value(cards) -> int:
     return 0
 
 
-def isFourOfAKind(hand, board) -> Tuple[int, int]:
+def is_four_of_a_kind(hand, board) -> Tuple[int, int]:
     cards = hand + board
-    ranks = faceToInt(cards)
+    ranks = face_to_int(cards)
     counts = {}
-    quadsRank = 0
+    quads_rank = 0
     handSum = 0
 
     for rank in ranks:
@@ -237,21 +237,21 @@ def isFourOfAKind(hand, board) -> Tuple[int, int]:
 
     for key in counts:
         if counts[key] == 4:
-            quadsRank = key
+            quads_rank = key
 
-    if quadsRank:
-        remaining_ranks = [rank for rank in ranks if rank != quadsRank]
+    if quads_rank:
+        remaining_ranks = [rank for rank in ranks if rank != quads_rank]
         remaining_ranks.sort()
-        handSum = quadsRank * 4 + remaining_ranks[-1]
+        handSum = quads_rank * 4 + remaining_ranks[-1]
 
-        return quadsRank, handSum
+        return quads_rank, handSum
 
     return 0, 0
 
 
-def isFullHouse(hand, board) -> Tuple[int, int]:
+def is_full_house(hand, board) -> Tuple[int, int]:
     cards = hand + board
-    ranks = faceToInt(cards)
+    ranks = face_to_int(cards)
     counts = {}
     trips = []
     pairs = []
@@ -280,7 +280,7 @@ def isFullHouse(hand, board) -> Tuple[int, int]:
     return 0, 0
 
 
-def isFlush(hand, board) -> int:
+def is_flush(hand, board) -> int:
     cards = hand + board
     suits = [[], [], [], []]
 
@@ -296,49 +296,48 @@ def isFlush(hand, board) -> int:
 
     for suit in suits:
         if len(suit) > 4:
-            intCards = faceToInt(suit)
-            intCards.sort()
-            intCards[-5:]
+            int_cards = face_to_int(suit)
+            int_cards.sort()
+            int_cards[-5:]
 
-            return sum(intCards)
+            return sum(int_cards)
 
     return 0
 
 
-def isStraight(hand, board) -> int:
+def is_straight(hand, board) -> int:
     cards = hand + board
-    intCards = straightFaceToInt(cards)
-    intCards.sort()
+    int_cards = straight_face_to_int(cards)
+    int_cards.sort()
 
-    longestStraight = []
-    currentStraight = [intCards[0]]
+    longest_straight = []
+    current_straight = [int_cards[0]]
 
-    for i in range(1, len(intCards)):
-        if intCards[i] == intCards[i - 1]:
+    for i in range(1, len(int_cards)):
+        if int_cards[i] == int_cards[i - 1]:
             continue
 
-        if intCards[i] == intCards[i - 1] + 1 or (intCards[i] == 14 and len(currentStraight) >= 4):
-            currentStraight.append(intCards[i])
+        if int_cards[i] == int_cards[i - 1] + 1 or (int_cards[i] == 14 and len(current_straight) >= 4):
+            current_straight.append(int_cards[i])
         else:
-            currentStraight = [intCards[i]]
+            current_straight = [int_cards[i]]
 
-        if len(currentStraight) > len(longestStraight):
-            longestStraight = currentStraight.copy()
+        if len(current_straight) > len(longest_straight):
+            longest_straight = current_straight.copy()
 
-    if len(longestStraight) >= 5:
+    if len(longest_straight) >= 5:
 
-        return sum(longestStraight[-5:])
+        return sum(longest_straight[-5:])
 
     return 0
 
 
-def isThreeOfAKind(hand, board) -> Tuple[int, int]:
+def is_three_of_a_kind(hand, board) -> Tuple[int, int]:
     cards = hand + board
-    ranks = faceToInt(cards)
+    ranks = face_to_int(cards)
     counts = {}
     trips = []
     final_hand = []
-    tripsRank = 0
 
     for rank in ranks:
         if rank not in counts:
@@ -355,19 +354,19 @@ def isThreeOfAKind(hand, board) -> Tuple[int, int]:
     final_hand.extend(remaining_ranks[-2:])
 
     if len(trips) >= 1:
-        tripsRank = max(trips)
-        final_hand.append(tripsRank * 3)
+        trips_rank = max(trips)
+        final_hand.append(trips_rank * 3)
 
-        return tripsRank, sum(final_hand)
+        return trips_rank, sum(final_hand)
 
     return 0, 0
 
 
-def isTwoPair(hand, board) -> Tuple[int, int, int]:
+def is_two_pair(hand, board) -> Tuple[int, int, int]:
     cards = hand + board
-    ranks = faceToInt(cards)
+    ranks = face_to_int(cards)
     counts = {}
-    pairRanks = []
+    pair_ranks = []
     final_hand = []
 
     for rank in ranks:
@@ -378,26 +377,26 @@ def isTwoPair(hand, board) -> Tuple[int, int, int]:
 
     for key in counts:
         if counts[key] == 2:
-            pairRanks.append(key)
+            pair_ranks.append(key)
 
-    remaining_ranks = [rank for rank in ranks if rank not in pairRanks]
+    remaining_ranks = [rank for rank in ranks if rank not in pair_ranks]
     final_hand.append(max(remaining_ranks))
 
-    if len(pairRanks) >= 2:
-        final_hand.append(sum(pairRanks) * 2)
-        pairRanks.sort()
+    if len(pair_ranks) >= 2:
+        final_hand.append(sum(pair_ranks) * 2)
+        pair_ranks.sort()
 
-        return pairRanks[-1], pairRanks[-2], sum(final_hand)
+        return pair_ranks[-1], pair_ranks[-2], sum(final_hand)
 
     return 0, 0, 0
 
 
-def isOnePair(hand, board) -> Tuple[int, int]:
+def is_one_pair(hand, board) -> Tuple[int, int]:
     cards = hand + board
-    ranks = faceToInt(cards)
+    ranks = face_to_int(cards)
     counts = {}
     final_hand = []
-    pairRank = 0
+    pair_rank = 0
 
     for rank in ranks:
         if rank not in counts:
@@ -408,140 +407,140 @@ def isOnePair(hand, board) -> Tuple[int, int]:
     pairs = [key for key, value in counts.items() if value == 2]
 
     if pairs:
-        pairRank = max(pairs)
+        pair_rank = max(pairs)
 
-        remaining_ranks = [rank for rank in ranks if rank != pairRank]
+        remaining_ranks = [rank for rank in ranks if rank != pair_rank]
         remaining_ranks.sort()
         final_hand.extend(remaining_ranks[-3:])
 
-        final_hand.append(pairRank * 2)
+        final_hand.append(pair_rank * 2)
 
-        return pairRank, sum(final_hand)
+        return pair_rank, sum(final_hand)
 
     return 0, 0
 
 
-def bestHiCard(hand, board) -> int:
+def best_hi_card(hand, board) -> int:
     cards = hand + board
-    ranks = faceToInt(cards)
+    ranks = face_to_int(cards)
     ranks.sort()
 
     return sum(ranks[-5:])
 
 
-def getHandRank(hand, board) -> Tuple[int, int, int, int]:
-    straightFlush = isStraightFlush(hand, board)
-    quadsRank, quadsHi = isFourOfAKind(hand, board)
-    boatTrips, boatPair = isFullHouse(hand, board)
-    flush = isFlush(hand, board)
-    straight = isStraight(hand, board)
-    tripsRank, tripsHi = isThreeOfAKind(hand, board)
-    pair1, pair2, twoPairHi = isTwoPair(hand, board)
-    pairRank, pairHi = isOnePair(hand, board)
-    hiCard = bestHiCard(hand, board)
+def get_hand_rank(hand, board) -> Tuple[int, int, int, int]:
+    straight_flush = is_straight_flush(hand, board)
+    quads_rank, quads_hi = is_four_of_a_kind(hand, board)
+    boats_trip, boats_pair = is_full_house(hand, board)
+    flush = is_flush(hand, board)
+    straight = is_straight(hand, board)
+    trips_rank, trips_hi = is_three_of_a_kind(hand, board)
+    pair1, pair2, two_pair_hi = is_two_pair(hand, board)
+    pair_rank, pair_hi = is_one_pair(hand, board)
+    hi_card = best_hi_card(hand, board)
 
-    if straightFlush:
-        return STRAIGHT_FLUSH, straightFlush, 0, 0
-    if quadsRank:
-        return FOUR_OF_A_KIND, quadsRank, 0, quadsHi
-    if boatTrips:
-        return FULL_HOUSE, boatTrips, boatPair, 0
+    if straight_flush:
+        return STRAIGHT_FLUSH, straight_flush, 0, 0
+    if quads_rank:
+        return FOUR_OF_A_KIND, quads_rank, 0, quads_hi
+    if boats_trip:
+        return FULL_HOUSE, boats_trip, boats_pair, 0
     if flush:
         return FLUSH, flush, 0, 0
     if straight:
         return STRAIGHT, straight, 0, 0
-    if tripsRank:
-        return THREE_OF_A_KIND, tripsRank, 0, tripsHi
+    if trips_rank:
+        return THREE_OF_A_KIND, trips_rank, 0, trips_hi
     if pair1:
-        return TWO_PAIR, pair1, pair2, twoPairHi
-    if pairRank:
-        return ONE_PAIR, pairRank, 0, pairHi
+        return TWO_PAIR, pair1, pair2, two_pair_hi
+    if pair_rank:
+        return ONE_PAIR, pair_rank, 0, pair_hi
 
-    return HI_CARD, hiCard, 0, 0
+    return HI_CARD, hi_card, 0, 0
 
 
 # Main game function
 def main() -> None:
 
     print("Ultimate Texas Holdem\n")
-    player_roll = getChips()
-    player = Player(player_roll, 0, 0, 0)
+    player_roll = get_chips()
+    player = Player(player_roll)
 
     playing = True
     while playing:
         winner = ""
         winnings = 0
-        betTotal = 0
-        preflopBet = 0
-        flopBet = 0
-        riverBet = 0
+        bet_total = 0
+        preflop_bet = 0
+        flop_bet = 0
+        river_bet = 0
 
-        deck = generateDeck()
+        deck = generate_deck()
 
-        anteBet = placeBet()
-        betTotal += anteBet
+        ante_bet = place_bet()
+        bet_total += ante_bet
 
-        blindBet = anteBet
-        betTotal += blindBet
+        blind_bet = ante_bet
+        bet_total += blind_bet
 
-        playerHand, dealerHand = dealCards(deck)
+        player_hand, dealer_hand = deal_cards(deck)
 
-        print(f"\nPlayer Hand: {playerHand[0]} {playerHand[1]}")
+        print(f"\nPlayer Hand: {player_hand[0]} {player_hand[1]}")
 
-        preflopChoice = betOrCheck()
-        if preflopChoice == BET:
-            preflopBet = placePreflopBet(anteBet)
-            betTotal += preflopBet
+        preflop_choice = bet_or_check()
+        if preflop_choice == BET:
+            preflop_bet = place_preflop_bet(ante_bet)
+            bet_total += preflop_bet
 
-        board = dealFlop(deck)
-        print(f"\t\nFlop: {board[0]}  {board[1]}  {board[2]}\n")
+        board = deal_flop(deck)
+        print(f"\nFlop: {board[0]}  {board[1]}  {board[2]}\n")
 
-        if preflopBet == 0:
-            flopChoice = betOrCheck()
-            if flopChoice == BET:
-                flopBet = placeFlopBet(anteBet)
-                betTotal += flopBet
+        if preflop_bet == 0:
+            flop_choice = bet_or_check()
+            if flop_choice == BET:
+                flop_bet = place_flop_bet(ante_bet)
+                bet_total += flop_bet
 
-        river = dealTurnAndRiver(deck)
+        river = deal_turn_and_river(deck)
         board.extend(river)
-        print(f"\t\nBoard: {board[0]}  {board[1]}  {board[2]}  {board[3]}  {board[4]}\n")
+        print(f"\nBoard: {board[0]}  {board[1]}  {board[2]}  {board[3]}  {board[4]}\n")
 
-        if preflopBet == 0 and flopBet == 0:
-            riverChoice = betOrCheck()
-            if riverChoice == BET:
-                riverBet = placeRiverBet(anteBet)
-                betTotal += riverBet
+        if preflop_bet == 0 and flop_bet == 0:
+            river_choice = bet_or_check()
+            if river_choice == BET:
+                river_bet = place_river_bet(ante_bet)
+                bet_total += river_bet
 
-        playerHandRank, playerKeyRank1, playerKeyRank2, playerHiSum = getHandRank(
-            playerHand, board)
+        player_hand_rank, player_key_rank_1, player_key_rank_2, player_hi_sum = get_hand_rank(
+            player_hand, board)
 
-        dealerHandRank, dealerKeyRank1, dealerKeyRank2, dealerHiSum = getHandRank(
-            dealerHand, board)
+        dealer_hand_rank, dealer_key_rank_1, dealer_key_rank_2, dealer_hi_sum = get_hand_rank(
+            dealer_hand, board)
 
-        print(f"Player Hand: {playerHand[0]} {playerHand[1]}")
-        print(f"Dealer Hand: {dealerHand[0]} {dealerHand[1]}")
+        print(f"Player Hand: {player_hand[0]} {player_hand[1]}")
+        print(f"Dealer Hand: {dealer_hand[0]} {dealer_hand[1]}")
 
-        if playerHandRank > dealerHandRank:
+        if player_hand_rank > dealer_hand_rank:
             winner = "player"
-        if dealerHandRank > playerHandRank:
+        if dealer_hand_rank > player_hand_rank:
             winner = "dealer"
 
-        if playerHandRank == dealerHandRank:
-            if playerKeyRank1 > dealerKeyRank1:
+        if player_hand_rank == dealer_hand_rank:
+            if player_key_rank_1 > dealer_key_rank_1:
                 winner = "player"
-            elif dealerKeyRank1 > playerKeyRank1:
+            elif dealer_key_rank_1 > player_key_rank_1:
                 winner = "dealer"
-            elif playerHandRank == FULL_HOUSE or playerHandRank == TWO_PAIR:
-                if playerKeyRank2 > dealerKeyRank2:
+            elif player_hand_rank == FULL_HOUSE or player_hand_rank == TWO_PAIR:
+                if player_key_rank_2 > dealer_key_rank_2:
                     winner = "player"
-                if dealerKeyRank2 > playerKeyRank2:
+                if dealer_key_rank_2 > player_key_rank_2:
                     winner = "dealer"
             else:
-                if playerHiSum > dealerHiSum:
+                if player_hi_sum > dealer_hi_sum:
                     winner = "player"
-                if dealerHiSum > playerHiSum:
+                if dealer_hi_sum > player_hi_sum:
                     winner = "dealer"
-                if dealerHiSum == playerHiSum:
+                if dealer_hi_sum == player_hi_sum:
                     winner = "push"
 
         if winner == "push":
@@ -550,40 +549,40 @@ def main() -> None:
 
         if winner == "dealer":
             print("\nDealer Wins...")
-            print(f"Player: -${betTotal}")
-            player_roll -= betTotal
+            print(f"Player: -${bet_total}")
+            player_roll -= bet_total
             player.roll = player_roll
             player.update_losses()
 
         if winner == "player":
             print("\nPlayer Wins!!!")
-            if dealerHandRank >= ONE_PAIR:
-                winnings += anteBet * 2
+            if dealer_hand_rank >= ONE_PAIR:
+                winnings += ante_bet * 2
 
-            if playerHandRank >= STRAIGHT:
-                if playerHandRank == STRAIGHT_FLUSH:
-                    winnings += blindBet + blindBet * 50
+            if player_hand_rank >= STRAIGHT:
+                if player_hand_rank == STRAIGHT_FLUSH:
+                    winnings += blind_bet + blind_bet * 50
 
-                if playerHandRank == FOUR_OF_A_KIND:
-                    winnings += blindBet + blindBet * 10
+                if player_hand_rank == FOUR_OF_A_KIND:
+                    winnings += blind_bet + blind_bet * 10
 
-                if playerHandRank == FULL_HOUSE:
-                    winnings += blindBet + blindBet * 3
+                if player_hand_rank == FULL_HOUSE:
+                    winnings += blind_bet + blind_bet * 3
 
-                if playerHandRank == FLUSH:
-                    winnings += blindBet + blindBet * 1.5
+                if player_hand_rank == FLUSH:
+                    winnings += blind_bet + blind_bet * 1.5
 
-                if playerHandRank == STRAIGHT:
-                    winnings += blindBet * 2
+                if player_hand_rank == STRAIGHT:
+                    winnings += blind_bet * 2
 
-            if preflopBet > 0:
-                winnings += preflopBet
+            if preflop_bet > 0:
+                winnings += preflop_bet
 
-            if flopBet > 0:
-                winnings += flopBet
+            if flop_bet > 0:
+                winnings += flop_bet
 
-            if riverBet > 0:
-                winnings += riverBet
+            if river_bet > 0:
+                winnings += river_bet
 
             print(f"Player +${winnings}")
             player_roll += winnings
@@ -591,7 +590,7 @@ def main() -> None:
             player.update_wins()
 
         time.sleep(1)
-        choice = playAgain()
+        choice = play_again()
 
         if choice == "y":
             time.sleep(1)
@@ -599,8 +598,8 @@ def main() -> None:
             print(f"Player Stats: W{player.wins} - L{player.losses} - T{player.ties}.\n")
 
             if player_roll <= 0:
-                reloadAmount = getChips()
-                player_roll += reloadAmount
+                reload_amount = get_chips()
+                player_roll += reload_amount
                 player.roll = player_roll
             continue
         else:
